@@ -13,76 +13,76 @@ struct node
 
 struct node* root = NULL;
 
-void InsertAtTheEnd()			
+void InsertAtTheEnd()
 {
 	struct node* temp;
-	
+
 	temp = (struct node*) malloc(sizeof(struct node));
-	
+
 	temp->left = NULL;
-	
+
 	printf("Enter Roll no. : ");
 	scanf("%d",&temp->rollno);
-	
+
 	printf("Enter name : ");
 	scanf("%s",temp->name);
-	
+
 	printf("Enter CGPA : ");
 	scanf("%d",&temp->cgpa);
-	
+
 	temp->right = NULL;
-	
+
 	if(root == NULL)
 	{
 		root = temp;
 	}
-	
+
 	else
 	{
 		struct node* p;		//for traversing through the node, we are using another var.
-		
+
 		p = root;		//initializing it to root to tarverse from start point
-		
+
 		while (p->right != NULL)
 		{
 			p = p->right;
 		}
-		
+
 		p->right = temp;	//connecting forward
-		temp->left = p;		//connecting backward		
+		temp->left = p;		//connecting backward
 	}
 }
 
-void InsertInFront()		//AddAtBegin
+void InsertInFront()
 {
 	struct node* temp;
-	
+
 	temp = (struct node*) malloc(sizeof(struct node));
 
 	temp->left = NULL;
-	
+
 	printf("Enter Roll no. : ");
 	scanf("%d",&temp->rollno);
-	
+
 	printf("Enter name : ");
 	scanf("%s",temp->name);
-	
+
 	printf("Enter CGPA : ");
 	scanf("%d",&temp->cgpa);
-	
+
 	temp->right = NULL;
-	
+
 	if(root == NULL)
 	{
 		root = temp;
 	}
-	
+
 	else
 	{
 		/*
 		will connect right node first else whole structure data will be lost, since root will not further point to whole data structure
 		*/
-	
+
 		temp->right = root;	//connecting forward to the whole struct at starting point
 		root->left = temp;	//connectong backward
 		root = temp;		//head(root) will take address of newly created node
@@ -93,33 +93,33 @@ int StrengthOfStudents()
 {
 	struct node*  temp = root;
 	int count = 0;
-	
+
 	while(temp !=NULL)
 	{
-		count++;		
+		count++;
 		temp = temp->right;		//traversing forward
 	}
-	
+
 	return count;
 }
 
-void Display()
+void Display()	//done
 {
 	struct node*  temp = root;
-	
+
 	if(temp == NULL)
 	{
 		printf("\nList is EMPTY!");
 	}
-	
+
 	else
 	{
 		while(temp !=NULL)
 		{
 			printf("\nRoll no. : %d", temp->rollno);
 			printf("\nName : %s", temp->name);
-			printf("\nCGPA : %d", temp->cgpa);	
-			
+			printf("\nCGPA : %d", temp->cgpa);
+
 			temp = temp->right;	//traversing forward
 		}
 	}
@@ -129,56 +129,56 @@ void InsertInBetween()
 {
 	struct node* temp, *p;
 	int loc, len=StrengthOfStudents(), i=1;
-	
+
 	printf("Enter loaction to add : ");
 	scanf("%d",&loc);
 
 	loc--;		//to set element on particular position entered
-	
+
 	if(loc > len)
 	{
 		printf("\nInvalid location.");
-		printf("\nList contains only : %d elements.",len);	
+		printf("\nList contains only : %d elements.",len);
 	}
-	
+
 	else
 	{
 		temp = (struct node*) malloc(sizeof(struct node));
-		
+
 		temp->left = NULL;
-	
+
 		printf("Enter Roll no. : ");
 		scanf("%d",&temp->rollno);
-	
+
 		printf("Enter name : ");
 		scanf("%s",temp->name);
-	
+
 		printf("Enter CGPA : ");
 		scanf("%d",&temp->cgpa);
-	
+
 		temp->right = NULL;
-	
+
 		p = root;	//Another pointer for traversal
-		
+
 		while(i<loc)
 		{
 			p = p->right;
 			i++;
 		}
-		
+
 		temp->right = p->right;		//connecting forward - right side of temp
 		p->right->left = temp;		//connecting backward pointer to pointer - right side of temp
 		temp->left = p;			//connectng backward - left side of temp
 		p->right = temp;		//connectng forward - left side of temp
-	}	
+	}
 }
 
 void DeleteFirstNode()
 {
 	struct node* temp;
-	
+
 	temp = root;
-	
+
 	if (temp == NULL)
 	{
 		printf("\nThe list is EMPTY!");
@@ -193,38 +193,38 @@ void DeleteFirstNode()
 	}
 }
 
-void DeleteAnyNode()		//left
+void DeleteAnyNode()
 {
 	struct node* temp = root, *newtemp = (struct node*) malloc(sizeof(struct node));
-	
+
 	int loc, len=StrengthOfStudents();
-	
+
 	if(temp==NULL)
 	{
 		printf("The list is EMPTY!\n");
 	}
-	
+
 	else
 	{
 		printf("Enter node no. to delete : ");
 		scanf("%d",&loc);
-		
+
 		if(loc > StrengthOfStudents())
 		{
-			printf("Invalid location!\n");		
+			printf("Invalid location!\n");
 		}
-		
+
 		else if (len >= 2)
 		{
 			int i=1;
-			
+
 			while(i < loc-1)
 			{
 				temp = temp->right;
 				i++;
 			}
 
-			newtemp = temp->right;	//newtemp initially points to node to be deleted	 
+			newtemp = temp->right;	//newtemp initially points to node to be deleted
 
 			temp->right = newtemp->right;
 
@@ -232,23 +232,23 @@ void DeleteAnyNode()		//left
 
 			free(newtemp);
 
-			printf("Node successfully DELETED!");					
+			printf("Node successfully DELETED!");
 		}
-		
+
 		else
 		{
 			DeleteFirstNode();
-		}	
+		}
 	}
 }
 
-void DeleteLastNode()		//else is left
+void DeleteLastNode()
 {
 	struct node* temp;
 	int len = StrengthOfStudents();
-	
+
 	temp = root;
-	
+
 	if (temp == NULL)
 	{
 		printf("\nThe list is EMPTY!");
@@ -260,30 +260,28 @@ void DeleteLastNode()		//else is left
 		{
 			temp = temp->right;
 		}
-		
-		if(len >= 2)		
+
+		if(len >= 2)
 		{
 			temp->left->right = NULL;	//temp->left(address of preceeding node). When right is used, it points to the address of node to be deleted.
 		}
-		
+
 		else					//if list has only one node, then we don't need above line of code. Since, no backward(left) pointer is present.
 		{
 			temp->left = NULL;
 		}
-		
+
 		free(temp);
-			
+
 		printf("\nLast node deleted SUCCESSFULLY!");
-	}	
+	}
 }
 
 void Search()
 {
-	struct Node* temp;
+	struct node* temp = root;
 	int rn, count=0;
 
-	temp = head;
-	
 	printf("Enter Roll no. to search the student : ");
 	scanf("%d",&rn);
 
@@ -295,15 +293,15 @@ void Search()
 			printf("\nName : %s",temp->name);
 			printf("\nCGPA : %d",temp->cgpa);
 		}
-		
+
 		else
 		{
 			count++;
 		}
-		
-		temp =  temp->next;
+
+		temp =  temp->right;
 	}
-	
+
 	if(count == StrengthOfStudents())
 	{
 		printf("NO result found!\n");
@@ -312,16 +310,16 @@ void Search()
 
 int main()
 {
-	int option, x=1;
-	
-	while(x=1)
+	int option;
+
+	while(1)
 	{
 		printf("\n---------------------------------------------------");
-		printf("\n1) Insert in front.\n2) Insert in between.\n3) Insert at the end.\n4) Strength of Students.\n5) Delete first node.\n6) Delete any node.\n7) Delete last node.\n8) Display.\n9) Search by Roll no.\n10) Exit.\n");
-	
+		printf("\n1) Insert in front.\n2) Insert in between.\n3) Insert at the end.\n4) Delete first node.\n5) Delete any node.\n6) Delete last node.\n7) Display.\n8) Search by Roll no.\n9) Exit.\n");
+
 		printf("\nEnter option to start : ");
 		scanf("%d",&option);
-	
+
 		printf("---------------------------------------------------\n");
 		switch(option)
 		{
@@ -334,28 +332,25 @@ int main()
 			case 3: InsertAtTheEnd();
 			break;
 
-			case 4: StrengthOfStudents();
+			case 4: DeleteFirstNode();
 			break;
-			
-			case 5: DeleteFirstNode();
+
+			case 5: DeleteAnyNode();
 			break;
-			
-			case 6: DeleteAnyNode();
+
+			case 6: DeleteLastNode();
 			break;
-			
-			case 7: DeleteLastNode();
-			break;				
-			
-			case 8: Display();
+
+			case 7: Display();
 			break;
-			
-			case 9: Search();
+
+			case 8: Search();
 			break;
-			
-			case 10: exit(0);
+
+			case 9: exit(0);
 			break;
 		}
 	}
-	
+
 	return 0;
 }
