@@ -103,7 +103,7 @@ int StrengthOfStudents()
 	return count;
 }
 
-void Display()	//done
+void Display()
 {
 	struct node*  temp = root;
 

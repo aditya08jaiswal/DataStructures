@@ -15,7 +15,6 @@ struct node
 struct node* head = NULL;
 struct node* tail = NULL;
 
-/*
 void InsertAtTheEnd()
 {
 	struct node* temp;
@@ -35,27 +34,23 @@ void InsertAtTheEnd()
 
 	temp->right = NULL;
 
-	if(root == NULL)
+	if(head == NULL)
 	{
-		root = temp;
+		temp->right = temp;
+		temp->left = temp;
+		head = temp;
 	}
 
 	else
 	{
-		struct node* p;		//for traversing through the node, we are using another var.
-
-		p = root;		//initializing it to root to tarverse from start point
-
-		while (p->right != NULL)
-		{
-			p = p->right;
-		}
-
-		p->right = temp;	//connecting forward
-		temp->left = p;		//connecting backward
+		tail = head->left;	//getting last node
+		temp->right = head;	//connecting new node's right to head - forward
+		temp->left = tail;	//connecting new node's left to tail - backward
+		tail->right = temp;	//connecting tail's right to temp - backward
+		head->left = temp;	//connecting forward the head and new node
 	}
 }
-*/
+
 void InsertInFront()
 {
 	struct node* temp = (struct node*) malloc(sizeof(struct node));
@@ -92,24 +87,26 @@ void InsertInFront()
 		tail = head->left;
 }
 
-/*
+
 int StrengthOfStudents()
 {
-	struct node*  temp = root;
+	struct node*  temp = head;
 	int count = 0;
 
-	while(temp !=NULL)
+	do
 	{
 		count++;
 		temp = temp->right;		//traversing forward
 	}
+	while(temp != head);
 
 	return count;
 }
 
+
 void Display()
 {
-	struct node*  temp = root;
+	struct node* temp = head;
 
 	if(temp == NULL)
 	{
@@ -118,14 +115,18 @@ void Display()
 
 	else
 	{
-		while(temp !=NULL)
+		do
 		{
+			printf("\n************************************************\n");
 			printf("\nRoll no. : %d", temp->rollno);
 			printf("\nName : %s", temp->name);
 			printf("\nCGPA : %d", temp->cgpa);
 
 			temp = temp->right;	//traversing forward
 		}
+		while(temp != head);
+
+		printf("\n************************************************\n\n");
 	}
 }
 
@@ -162,7 +163,7 @@ void InsertInBetween()
 
 		temp->right = NULL;
 
-		p = root;	//Another pointer for traversal
+		p = head;	//Another pointer for traversal
 
 		while(i<loc)
 		{
@@ -181,7 +182,7 @@ void DeleteFirstNode()
 {
 	struct node* temp;
 
-	temp = root;
+	temp = head;
 
 	if (temp == NULL)
 	{
@@ -190,16 +191,17 @@ void DeleteFirstNode()
 
 	else
 	{
-		root = temp->right;
+		head = temp->right;
 		temp->right = NULL;
-		free(temp);
+		tail->right = head;
+
 		printf("\nNode successfully DELETED!");
 	}
 }
 
 void DeleteAnyNode()		//left
 {
-	struct node* temp = root, *newtemp = (struct node*) malloc(sizeof(struct node));
+	struct node* temp = head, *newtemp = (struct node*) malloc(sizeof(struct node));
 
 	int loc, len=StrengthOfStudents();
 
@@ -213,7 +215,7 @@ void DeleteAnyNode()		//left
 		printf("Enter node no. to delete : ");
 		scanf("%d",&loc);
 
-		if(loc > StrengthOfStudents())
+		if(loc > len)
 		{
 			printf("Invalid location!\n");
 		}
@@ -231,10 +233,7 @@ void DeleteAnyNode()		//left
 			newtemp = temp->right;	//newtemp initially points to node to be deleted
 
 			temp->right = newtemp->right;
-
 			newtemp->left = temp;
-
-			free(newtemp);
 
 			printf("Node successfully DELETED!");
 		}
@@ -246,12 +245,12 @@ void DeleteAnyNode()		//left
 	}
 }
 
-void DeleteLastNode()		//else is left
+void DeleteLastNode()
 {
 	struct node* temp;
 	int len = StrengthOfStudents();
 
-	temp = root;
+	temp = head;
 
 	if (temp == NULL)
 	{
@@ -260,19 +259,21 @@ void DeleteLastNode()		//else is left
 
 	else
 	{
-		while (temp->right != NULL)
+		while (temp->right != head)
 		{
 			temp = temp->right;
 		}
 
 		if(len >= 2)
 		{
-			temp->left->right = NULL;	//temp->left(address of preceeding node). When right is used, it points to the address of node to be deleted.
+			temp->left->right = head;	//temp->left(address of preceeding node). When right is used, it points to the address of node to be deleted.
+			temp->left = NULL;
 		}
 
 		else					//if list has only one node, then we don't need above line of code. Since, no backward(left) pointer is present.
 		{
 			temp->left = NULL;
+			head = NULL;
 		}
 
 		free(temp);
@@ -283,15 +284,21 @@ void DeleteLastNode()		//else is left
 
 void Search()
 {
-	struct Node* temp;
-	int rn, count=0;
+	struct node* temp;
+	int rn, count=0, len=StrengthOfStudents();
 
 	temp = head;
+
+	if (temp==NULL)
+	{
+		printf("No data to search\n");
+		return;
+	}
 
 	printf("Enter Roll no. to search the student : ");
 	scanf("%d",&rn);
 
-	while(temp != NULL)
+	do
 	{
 		if(temp->rollno == rn)
 		{
@@ -305,18 +312,15 @@ void Search()
 			count++;
 		}
 
-		temp =  temp->next;
+		temp = temp->right;
 	}
+	while(temp != head);
 
-	if(count == StrengthOfStudents())
+	if(count == len)
 	{
 		printf("NO result found!\n");
 	}
 }
-
-
-
-*/
 
 int main()
 {
